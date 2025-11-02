@@ -4,53 +4,61 @@ import java.util.*;
 
 public class TarjanSCC {
     private int time;
-    private List<List<Integer>> components;
-    private int[] ids, low;
+    private int[] disc;
+    private int[] low;
     private boolean[] onStack;
     private Deque<Integer> stack;
+    private List<List<Integer>> result;
 
     public List<List<Integer>> findSCC(Graph g) {
+        Metrics.startTimer();
+
         int n = g.size();
         time = 0;
-        components = new ArrayList<>();
-        ids = new int[n];
+        disc = new int[n];
         low = new int[n];
         onStack = new boolean[n];
         stack = new ArrayDeque<>();
+        result = new ArrayList<>();
 
-        Arrays.fill(ids, -1);
+        Arrays.fill(disc, -1);
 
         for (int i = 0; i < n; i++) {
-            if (ids[i] == -1)
-                dfs(i, g.getAdjList());
+            if (disc[i] == -1) {
+                dfs(i, g);
+            }
         }
 
-        return components;
+        Metrics.stopTimer();
+        System.out.println("Tarjan SCC time: " + Metrics.getElapsedMillis() + " ms");
+        return result;
     }
 
-    private void dfs(int at, List<List<Edge>> adj) {
-        ids[at] = low[at] = time++;
-        stack.push(at);
-        onStack[at] = true;
+    private void dfs(int u, Graph g) {
+        disc[u] = low[u] = ++time;
+        stack.push(u);
+        onStack[u] = true;
 
-        for (Edge e : adj.get(at)) {
-            if (ids[e.to] == -1) {
-                dfs(e.to, adj);
-                low[at] = Math.min(low[at], low[e.to]);
-            } else if (onStack[e.to]) {
-                low[at] = Math.min(low[at], ids[e.to]);
+        for (Edge e : g.getAdjList().get(u)) {
+            int v = e.to;
+            if (disc[v] == -1) {
+                dfs(v, g);
+                low[u] = Math.min(low[u], low[v]);
+            } else if (onStack[v]) {
+                low[u] = Math.min(low[u], disc[v]);
             }
         }
 
-        if (ids[at] == low[at]) {
-            List<Integer> comp = new ArrayList<>();
-            while (true) {
-                int node = stack.pop();
-                onStack[node] = false;
-                comp.add(node);
-                if (node == at) break;
-            }
-            components.add(comp);
+        // root of SCC
+        if (low[u] == disc[u]) {
+            List<Integer> component = new ArrayList<>();
+            int v;
+            do {
+                v = stack.pop();
+                onStack[v] = false;
+                component.add(v);
+            } while (v != u);
+            result.add(component);
         }
     }
 }

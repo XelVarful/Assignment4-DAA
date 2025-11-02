@@ -1,25 +1,18 @@
 package graph;
 
 public class Metrics {
-    public long dfsCalls = 0;
-    public long relaxations = 0;
-    private long start, end;
+    private static long startTime;
+    private static long endTime;
 
-    public void startTimer() {
-        start = System.nanoTime();
+    public static void startTimer() {
+        startTime = System.nanoTime();
     }
 
-    public void stopTimer() {
-        end = System.nanoTime();
+    public static void stopTimer() {
+        endTime = System.nanoTime();
     }
 
-    public long elapsedTime() {
-        return end - start;
-    }
-
-    public void print() {
-        System.out.println("DFS calls: " + dfsCalls);
-        System.out.println("Relaxations: " + relaxations);
-        System.out.println("Time: " + (elapsedTime() / 1_000_000.0) + " ms");
+    public static long getElapsedMillis() {
+        return (endTime - startTime) / 1_000_000;
     }
 }
