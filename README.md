@@ -1,7 +1,7 @@
-# DAA Assignment 4 — Graph Algorithms
+# DAA Assignment 4 Graph Algorithms
 ## About the Project
 
-This project was created as part of DAA (Design and Analysis of Algorithms) course — Assignment 4.
+Design and Analysis of Algorithms — Assignment 4.
 The main goal is to implement and analyze graph algorithms using Java and Maven.
 
 It includes:
