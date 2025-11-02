@@ -132,16 +132,23 @@ All JSON files are stored in the /data/ folder.
 | large3.json  |    45    |   44  | DAG-like |     1     |   Dense   | Heavy performance test |
 
 
-### Example Output
+### Output
 ```
 Loading graph from: data/small1.json
 Graph loaded: 6 nodes
+Tarjan SCC time: 0 ms
 SCC count: 2
-SCCs: [[2,1,0],[5,4,3]]
+SCCs: [[5, 4, 3], [2, 1, 0]]
+TarjanSCC time: 4 ms
 Condensed DAG size: 2
-Topological Order on condensed DAG: [0,1]
-Shortest distances from 0: {0=0,1=4}
-Longest distances from 0: {0=0,1=6}
+Condensation time: 19 ms
+Topological order: [1, 0]
+Topological sort time: 15 ms
+Shortest path time: 0 ms, relaxations: 0
+Longest path time: 0 ms, relaxations: 0
+Shortest distances from 0: {0=0, 1=2147483647}
+Longest distances from 0: {0=0, 1=-2147483648}
+Execution completed.
 ```
 ### Performance Metrics
 | Algorithm          | Average Time (ms) | Complexity | Notes                    |
@@ -160,19 +167,6 @@ Step	Description
 3️	Build condensation DAG
 4️	Apply topological sort
 5️	Compute shortest and longest paths
-### Example Datasets
-Dataset	Nodes	Edges	Type	Description
-small1.json	6	7	Cyclic	2 SCCs + simple DAG
-medium1.json	15	25	Mixed	Several SCCs
-large1.json	40	100	Dense	Stress test
-### Example Metrics (Performance)
-Dataset	Vertices	Edges	SCC Time (ms)	Topo Time (ms)	Path Time (ms)
-small1.json	6	7	0.45	0.12	0.15
-medium1.json	15	25	1.20	0.35	0.40
-large1.json	40	100	3.80	0.95	1.10
-
-These metrics were collected using Metrics.java (System.nanoTime-based).
-Results may vary slightly per system.
 
 ### Testing
 
